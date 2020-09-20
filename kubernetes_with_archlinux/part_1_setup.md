@@ -157,7 +157,3 @@ $ minikube start
 🌟  Enabled addons: default-storageclass, storage-provisioner
 🏄  Done! kubectl is now configured to use "minikube" by default
 ```
-<<<<<<< HEAD
-=======
-
->>>>>>> c74d3a831462ed419100f392ee80774fc6842151
