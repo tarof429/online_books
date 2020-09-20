@@ -22,6 +22,10 @@ The technology stack tht we'll look into is as follows:
 - Github - I'll tag recmd-cli and create a package
 - Gitbook
 
+## How to view this article
+
+Although this article is hosted on Github, it is optimized to be accessed using Gitbook at https://tarof429.gitbook.io/online-books/kubernetes_with_archlinux. 
+
 ## Setting up your development environment
 
 === Configuring Docker
