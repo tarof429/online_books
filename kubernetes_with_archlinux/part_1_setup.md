@@ -1,8 +1,6 @@
-# Kubernetes with ArchLinux
+# Part 1
 
-## Part 1
-
-### Introduction
+## Introduction
 
 ArchLinx is my favorite Linux distribution, and in this tutorial I am going to explain how to develop, deploy and manage a Kubernetes application on ArchLinux. We will first setup our development environment to the point where we can deploy pods to Minikube, a single node Kubernetes cluster. Next, we will take an exisiting Go application, turn it into a microservice, and deploy it to Minikube. Then to make our deployment more realistic, we will deploy some services and start to explore some tools to get insights into our cluster. In the next step, will will create a CI/CD pipeline and deploy our application to the cloud. We round out our tutorial with an exploration into additional tools used to deploy Kubernetes clusters. Finally, we will attempt to come up with a concise list of tools that you need to successfully use Kubernetes with ArchLinux, and delve into discussions into 
 
@@ -24,7 +22,7 @@ The technology stack tht we'll look into is as follows:
 - Github - I'll tag recmd-cli and create a package
 - Gitbook
 
-### Setting up your development environment
+## Setting up your development environment
 
 === Configuring Docker
 If you've been using Docker on your machine for any amount of time, chances are you have lots of containers and images that are eating valuable disk space. If possible, take this opportunity to clean up your system! You can use `docker system prune` to remove all stopped containers, dangling images, and unused networks. You can also use `docker image prune -a` to remove all unused images, not just dangling ones. Also make sure you run `docker volume prune` to remove all your volumes. Why go through this step? Ever since I started to use docker and minikube on my system, I've noticed that the free disk space on my `/` partition has been steadily decreasing. That's because all docker images, containers, volumes and layers are stored under /var/lib/docker/ In my case, /var is part of my `/` partition which is actually on a small NVMe drive. Due to the design of my motherboard, my NVMe slot is on the underside of my motherboard making maintenance and upgrading a hassle. 
@@ -70,7 +68,7 @@ If you're unsure of the syntax of this file, I suggest that you look at the Comm
 
 Once done, try pulling and running hello-world to verify that docker is working.
 
-### Managing Containers
+## Managing Containers
 
 You've no doubt used commands such as `docker images` and `docker containers` to manage docker resources on your machine. Let's look at some tools that can be used to accomplish the same and perhaps a little more.
 
@@ -82,7 +80,7 @@ https://github.com/jesseduffield/lazydocker[Lazydocker] is a standalone applicat
 
 I've tried all three, but I can't say with certainty that there is a clear winner. The docker.vim plugin is interesting, but for the amount of typing I need to do, doesn't feel like it's any better than using the command line. The Lazydocker application is a lot better, giving me the abiltiy to see everything related to docker in a kind of dashboard format. It took a while to navigate the sparse UI, but it does have lots of functionality. Finally, the docker extension for Visual Studio is the most pleasing to use, although it doesn't provide any metrics. 
 
-### Installing Minikube
+## Installing Minikube
 
 Before installing minikube, we'll first make sure all our packages are up-to-date.
 
