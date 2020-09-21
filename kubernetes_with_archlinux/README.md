@@ -4,5 +4,5 @@ description: >-
   on ArchLinux, my favorite Linux distro.
 ---
 
-# kubernetes\_with\_archlinux
+# Kubernetes with Archlinux
 
