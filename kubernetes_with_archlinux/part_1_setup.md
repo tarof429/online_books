@@ -2,7 +2,7 @@
 
 ## Introduction
 
-ArchLinx is my favorite Linux distribution, and in this tutorial I am going to explain how to develop, deploy and manage a Kubernetes application on ArchLinux. We will first setup our development environment to the point where we can deploy pods to Minikube, a single node Kubernetes cluster. Next, we will take an exisiting Go application, turn it into a microservice, and deploy it to Minikube. Then to make our deployment more realistic, we will deploy some services and start to explore some tools to get insights into our cluster. In the next step, will will create a CI/CD pipeline and deploy our application to the cloud. We round out our tutorial with an exploration into additional tools used to deploy Kubernetes clusters. Finally, we will attempt to come up with a concise list of tools that you need to successfully use Kubernetes with ArchLinux, and delve into discussions into
+ArchLinux is my favorite Linux distribution, and in this tutorial I am going to explain how to develop, deploy and manage a Kubernetes clusters on ArchLinux. We will first setup our development environment to the point where we can deploy pods to Minikube, a single node Kubernetes cluster. Next, we will take an exisiting Go application, turn it into a microservice, and deploy it to Minikube. Then to make our deployment more realistic, we will deploy some services and start to explore some tools to get insights into our cluster. In the next step, will will create a CI/CD pipeline and deploy our application to the cloud. We round out our tutorial with an exploration into additional tools used to deploy Kubernetes clusters. Finally, we will attempt to come up with a concise list of tools that you need to successfully use Kubernetes with ArchLinux, and delve into discussions into
 
 The technology stack tht we'll look into is as follows:
 
@@ -18,18 +18,23 @@ The technology stack tht we'll look into is as follows:
 * Spinaker
 * GKE
 * AWS
-* Github - I'll tag recmd-cli and create a package
+* Github
 * Gitbook
+* Prometheus
 
-## How to view this article
+## How to view this book
 
-Although this article is hosted on Github, it is optimized to be accessed using Gitbook at https://tarof429.gitbook.io/online-books/kubernetes_with_archlinux. 
+Although this book is hosted on Github, it is optimized to be accessed using Gitbook at https://tarof429.gitbook.io/online-books/kubernetes_with_archlinux. 
 
 ## Setting up your development environment
 
 === Configuring Docker If you've been using Docker on your machine for any amount of time, chances are you have lots of containers and images that are eating valuable disk space. If possible, take this opportunity to clean up your system! You can use `docker system prune` to remove all stopped containers, dangling images, and unused networks. You can also use `docker image prune -a` to remove all unused images, not just dangling ones. Also make sure you run `docker volume prune` to remove all your volumes. Why go through this step? Ever since I started to use docker and minikube on my system, I've noticed that the free disk space on my `/` partition has been steadily decreasing. That's because all docker images, containers, volumes and layers are stored under /var/lib/docker/ In my case, /var is part of my `/` partition which is actually on a small NVMe drive. Due to the design of my motherboard, my NVMe slot is on the underside of my motherboard making maintenance and upgrading a hassle.
 
 In any case, the location of docker images and volumes is configurable, and so for our development environment, lets change it. What we want to do is configure the Docker system daemon. Here we have some choices. We can either edit the service file at /lib/systemd/system/docker.service or edit the docker daemon configuration file at /etc/docker/daemon.json. A third option which could work for us is to use soft links.
+
+{% hint style="info" %}
+Read https://docs.docker.com/storage/storagedriver/ to understand more about storage driver options for docker. In my setup, I'm only using ext4 filesystems, but if you're really concerned with performance when building containers, you may want to look at alternatives such as overlay2.
+{% endhint %}
 
 The official docker daemon configuration page at [https://docs.docker.com/config/daemon](https://docs.docker.com/config/daemon) will tell you about the first two methods, while the third option is something that you'll find if you do a Google search with the phrase "how to change the default location for docker create volume". On ArchLinux, systemd is the most popular init system used; however, it is by no means the only one. So let's avoid changing a service file and instead look into editing `/etc/docker/daemon.json`. As the file extension suggests, this is a JSON file. Mine looks like this:
 
