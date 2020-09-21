@@ -28,7 +28,7 @@ Although this book is hosted on Github, it is optimized to be accessed using Git
 
 ## Setting up your development environment
 
-=== Configuring Docker If you've been using Docker on your machine for any amount of time, chances are you have lots of containers and images that are eating valuable disk space. If possible, take this opportunity to clean up your system! You can use `docker system prune` to remove all stopped containers, dangling images, and unused networks. You can also use `docker image prune -a` to remove all unused images, not just dangling ones. Also make sure you run `docker volume prune` to remove all your volumes. Why go through this step? Ever since I started to use docker and minikube on my system, I've noticed that the free disk space on my `/` partition has been steadily decreasing. That's because all docker images, containers, volumes and layers are stored under /var/lib/docker/ In my case, /var is part of my `/` partition which is actually on a small NVMe drive. Due to the design of my motherboard, my NVMe slot is on the underside of my motherboard making maintenance and upgrading a hassle.
+Configuring Docker If you've been using Docker on your machine for any amount of time, chances are you have lots of containers and images that are eating valuable disk space. If possible, take this opportunity to clean up your system! You can use `docker system prune` to remove all stopped containers, dangling images, and unused networks. You can also use `docker image prune -a` to remove all unused images, not just dangling ones. Also make sure you run `docker volume prune` to remove all your volumes. Why go through this step? Ever since I started to use docker and minikube on my system, I've noticed that the free disk space on my `/` partition has been steadily decreasing. That's because all docker images, containers, volumes and layers are stored under /var/lib/docker/ In my case, /var is part of my `/` partition which is actually on a small NVMe drive. Due to the design of my motherboard, my NVMe slot is on the underside of my motherboard making maintenance and upgrading a hassle.
 
 In any case, the location of docker images and volumes is configurable, and so for our development environment, lets change it. What we want to do is configure the Docker system daemon. Here we have some choices. We can either edit the service file at /lib/systemd/system/docker.service or edit the docker daemon configuration file at /etc/docker/daemon.json. A third option which could work for us is to use soft links.
 
@@ -53,7 +53,9 @@ What we can do is change this file so that data asssociated with docker is on th
 }
 ```
 
-NOTE: Be very cautious about making these changes. You may want to make a backup of /etc/docker/daemon.json just in case.
+{% hint style="info" %}
+Be very cautious about making these changes. You may want to make a backup of /etc/docker/daemon.json just in case.
+{% endhint %}
 
 What we are going to do is the following in terminal A:
 
@@ -85,6 +87,10 @@ If you use Visual Studio Code, there are a large number of extensions that let y
 [https://github.com/jesseduffield/lazydocker\[Lazydocker](https://github.com/jesseduffield/lazydocker[Lazydocker)\] is a standalone application that accomplishes much of the same but using a terminal window. If you want to know how to use the gocui library and how to create ArchLinux packages this is a good tool to investigate. It has has links at the bottom of the README.md to other docker terminal UIs.
 
 I've tried all three, but I can't say with certainty that there is a clear winner. The docker.vim plugin is interesting, but for the amount of typing I need to do, doesn't feel like it's any better than using the command line. The Lazydocker application is a lot better, giving me the abiltiy to see everything related to docker in a kind of dashboard format. It took a while to navigate the sparse UI, but it does have lots of functionality. Finally, the docker extension for Visual Studio is the most pleasing to use, although it doesn't provide any metrics.
+
+{% hint style="info" %}
+We'll take a look at Prometheus later. This tool provides many possibilites for metrics and alerting on a variety of data sources.
+{% endhint %}
 
 ## Installing Minikube
 
@@ -126,11 +132,11 @@ Optional dependencies for minikube
 [root@localhost]#
 ```
 
-You should also install kubectl if you haven't already; although minikube does provide the ability to run kubectl, it's very slow.
+You should also install kubectl if you haven't already; although minikube does provide the ability to run kubectl within the driver, it's very slow.
 
-The first time you start minikube, it will create a directory at ~/.minikube, download a docker image and start a container. You can see it if you run docker images or use a tool such as the Docker extension for VSCode.
+The first time you start minikube, it will create a directory at ~/.minikube, download the minikube docker image and start a container. The container is called gcr.io/k8s-minikube/kicbase. You can see it if you run docker images or use a tool such as the Docker extension for VSCode.
 
-According to the documentation, it is possible to view the configuration for minikube by running `minikube config view`. However, when I first ran this command, nothing was returned: no default values, no warning messages, nothing. Then I had a hunch that I need to set the default driver to see any change, so I ran `minikube set driver docker`. This time the CLI returned a value!
+According to the documentation, it is possible to view the configuration for minikube by running `minikube config view`. However, when I first ran this command, nothing was returned: no default values, no warning messages, nothing. Then I had a hunch that I needed to set the default driver, so I ran `minikube set driver docker`. This time the CLI returned a value!
 
 ```bash
 $ minikube config view
@@ -142,7 +148,7 @@ $ minikube config view
 
 This confirms that, if you want to configure minikube, it's best to do it right after installation.
 
-Let's poke around ~/.minikube to see where the driver was set. I found it under ~/.minikube/profiles/minikube/config.json. Searching for `docker` in this file, I found that the Driver field was set to `docker`. There are many other settings in this file. Of interest are the settings for memory, CPU and disksize, but we'll leave these alone. Perhaps we could revisit these later. Further down, I found a section for Nodes and Addons. These might be of interest later, so we'll make a note of these entries.
+Let's poke around ~/.minikube to see where the driver was set. I found it under ~/.minikube/profiles/minikube/config.json. Searching for `docker` in this file, I found that the Driver field was set to `docker`. There are many other settings in this file. Of interest are the settings for memory, CPU and disk size, but we'll leave these alone. Perhaps we could revisit these later. Further down, I found a section for Nodes and Addons. These might also be of interest later, so we'll make a note of these entries.
 
 Now that we've configured minikube to use the docker driver by default, let's wrap up this section by making these changes permanent. When we start minikube a second time, we can confirm that minikube started with the docker driver as we requested.
 
@@ -162,3 +168,5 @@ $ minikube start
 🌟  Enabled addons: default-storageclass, storage-provisioner
 🏄  Done! kubectl is now configured to use "minikube" by default
 ```
+
+In the next session, we'll look at how to create a simple deployment with minikube.
