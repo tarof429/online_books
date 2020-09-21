@@ -82,9 +82,9 @@ You've no doubt used commands such as `docker images` and `docker containers` to
 
 If you use Visual Studio Code, there are a large number of extensions that let you manage docker. Most books and training courses don't talk about them, but you should explore them since they are very easy to install and use. The extension that I have is simply called the Docker extension and it also aids in validating the content of a Dockerfile.
 
-[https://github.com/skanehira/docker.vim\[docker.vim](https://github.com/skanehira/docker.vim[docker.vim)\] is a plugin for managing docker using vim. You'll need to figure out how to install plugins for vim and then clone this repository to the plugins directory. Once installed, you can run commands such as `:DockerImages` to get a list of images.
+[docker.vim](https://github.com/skanehira/docker.vim) is a plugin for managing docker using vim. You'll need to figure out how to install plugins for vim and then clone this repository to the plugins directory. Once installed, you can run commands such as `:DockerImages` to get a list of images.
 
-[https://github.com/jesseduffield/lazydocker\[Lazydocker](https://github.com/jesseduffield/lazydocker[Lazydocker)\] is a standalone application that accomplishes much of the same but using a terminal window. If you want to know how to use the gocui library and how to create ArchLinux packages this is a good tool to investigate. It has has links at the bottom of the README.md to other docker terminal UIs.
+[Lazydocker](https://github.com/jesseduffield/lazydocker) is a standalone application that accomplishes much of the same but using a terminal window. If you want to know how to use the gocui library and how to create ArchLinux packages this is a good tool to investigate. It has has links at the bottom of the README.md to other docker terminal UIs.
 
 I've tried all three, but I can't say with certainty that there is a clear winner. The docker.vim plugin is interesting, but for the amount of typing I need to do, doesn't feel like it's any better than using the command line. The Lazydocker application is a lot better, giving me the abiltiy to see everything related to docker in a kind of dashboard format. It took a while to navigate the sparse UI, but it does have lots of functionality. Finally, the docker extension for Visual Studio is the most pleasing to use, although it doesn't provide any metrics.
 
@@ -134,7 +134,7 @@ Optional dependencies for minikube
 
 You should also install kubectl if you haven't already; although minikube does provide the ability to run kubectl within the driver, it's very slow.
 
-The first time you start minikube, it will create a directory at ~/.minikube, download the minikube docker image and start a container. The container is called gcr.io/k8s-minikube/kicbase. You can see it if you run docker images or use a tool such as the Docker extension for VSCode.
+The first time you start minikube, it will create a directory at ~/.minikube, download the minikube docker image and start a container. The container is called `gcr.io/k8s-minikube/kicbase`. You can see it if you run docker images or use a tool such as the Docker extension for VSCode.
 
 According to the documentation, it is possible to view the configuration for minikube by running `minikube config view`. However, when I first ran this command, nothing was returned: no default values, no warning messages, nothing. Then I had a hunch that I needed to set the default driver, so I ran `minikube set driver docker`. This time the CLI returned a value!
 
