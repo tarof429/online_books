@@ -419,3 +419,7 @@ Our URL to our service is unchanged.
 $ curl http://172.17.0.3/hello
 Hello nginx!
 ```
+
+## Conclusion
+
+At this point, I still didn't feel comfortable with my deployment. The main reason is that I'm not comfortable enough with nginx configuration. In the next section, I will develop a simple web application using Go.
