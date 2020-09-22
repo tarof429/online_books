@@ -106,7 +106,7 @@ You can see that nginx only saw the request as http://localhost:8080.
 Next I created a custom NGINX image. The base image is based upon nginx:latest and we'll overwrite index.html.
 
 {% code title="Dockerfile" %}
-```
+```Dockerfile
 FROM nginx:latest
 COPY ./index.html /usr/share/nginx/html/index.html
 ```
@@ -129,7 +129,7 @@ Hello nginx!
 Going back to https://kubernetes.io/docs/tutorials/hello-minikube, we could deploy our image using an imperative command. Instead, we'll create a deployment yaml file and deploy it to minikube. After making sure minikube is running, we deploy the deployment. We base the file from https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#deployment-v1-apps.
 
 {% code title="hellonginx-deployment.yml" %}
-```
+```yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -211,7 +211,7 @@ $ docker build -t hellonginx:v1.0 .
 Then make a quick edit to our deployment file to pick up this version.
 
 {% code title="hellonginx-deployment.yml" %}
-```
+```yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -267,7 +267,7 @@ $ minikube addons enable ingress
 Next we'll create a ClusterIP service to expose our deployment to the nginx ingress controller. What the ClusterIP service does is create an IP address .
 
 {% code title="hellonginx-clusterip-service.yml" %}
-```
+```yml
 apiVersion: v1
 kind: Service
 metadata:
@@ -286,7 +286,7 @@ spec:
 Finally we'll create our ingress service.
 
 {% code title="ingress-service.yml" %}
-```
+```yml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -375,7 +375,7 @@ $ docker build -t hellonginx:v1.1 .
 Next, we modify the cluster IP service to forward requests to port 9090.
 
 {% code title="hellonginx-clusterip-service.yml" %}
-```
+```yml
 apiVersion: v1
 kind: Service
 metadata:
@@ -393,7 +393,7 @@ spec:
 Finally we cahnge our route.
 
 {% code title="ingress-service.yml" %}
-```
+```yml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
