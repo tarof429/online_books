@@ -2,5 +2,5 @@
 
 * [About](README.md)
 * [Kubernetes with Archlinux](kubernetes_with_archlinux/README.md)
-  * [Part 1:  Introduction & Setup](kubernetes_with_archlinux/part_1_setup.md)
-  * [Part 2: Hello Minikube](kubernetes_with_archlinux/part2_hello_minikube.md)
+  * [Part 1: Introduction & Setup](kubernetes_with_archlinux/part_1_setup.md)
+  * [Part 2: Hello Minikube](kubernetes_with_archlinux/part_2_hello_minikube.md)
