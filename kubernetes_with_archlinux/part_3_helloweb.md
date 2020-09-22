@@ -144,7 +144,7 @@ spec:
 
 ## Step 5: Deploy the objects to the cluster
 
-After making sure we are still connnected to the docker daemon inside minikube, apply the objects.
+After making sure we are still connected to the docker daemon inside minikube, apply the objects.
 
 ```bash
 $ eval $(minikube -p minikube docker-env)
@@ -155,4 +155,4 @@ Hello from Go!
 
 ## Additional Notes
 
-There seems to be one important rule for exposing services: the servicePort in the ingress rule MUST match the targetPort for the service. We do not need to worry about the port value for our particular deployment as we don't have any other services that use our service. As an experiment, I was able to change the port value to a number like 4444 or 8091. I observed no change in the behavior.
+There seems to be one important rule for exposing services: the servicePort in the ingress rule MUST match the targetPort for the service. We do not need to worry about the port value for our particular deployment as we don't have any other services that use our service. As an experiment, I was able to change the port value to a number like 4444 or 8091, and observed no change in the behavior of my deployment.
