@@ -89,6 +89,10 @@ If you use Visual Studio Code, there are a large number of extensions that let y
 I've tried all three, but I can't say with certainty that there is a clear winner. The docker.vim plugin is interesting, but for the amount of typing I need to do, doesn't feel like it's any better than using the command line. The Lazydocker application is a lot better, giving me the abiltiy to see everything related to docker in a kind of dashboard format. It took a while to navigate the sparse UI, but it does have lots of functionality. Finally, the docker extension for Visual Studio is the most pleasing to use, although it doesn't provide any metrics.
 
 {% hint style="info" %}
+The Docker plugin for Visual Studio Code does not work with Kubernetes. We can't manage pods and deployments in our cluster using this plugin. Instead, we'll install the Kubernetes plugin for Visual Studio.
+{% endhint %}
+
+{% hint style="info" %}
 We'll take a look at Prometheus later. This tool provides many possibilites for metrics and alerting on a variety of data sources.
 {% endhint %}
 

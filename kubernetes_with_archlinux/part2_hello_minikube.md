@@ -75,7 +75,7 @@ BODY:
 -no body in request-
 ```
 
-I then SSH'ed into the container to see if I could find any more information about it.  In Visual Studio Code, I right-clicked on the container and attached a shell. Then I looked at /etc/nginx/nginx.conf, I found that the listener was hardcoded to listen to port 8080. I then felt that most likely the person who developed this image intended that the user maps an external port 80 to the internal port 8080 so stopped the container and started a new one with a small change. This finally gave me the result I was looking for.
+I then SSH'ed into the container to see if I could find any more information about it. In Visual Studio Code, I right-clicked on the container and attached a shell. Then I looked at /etc/nginx/nginx.conf, I found that the listener was hardcoded to listen to port 8080. I then felt that most likely the person who developed this image intended that the user maps an external port 80 to the internal port 8080 so stopped the container and started a new one with a small change. This finally gave me the result I was looking for.
 
 ```bash
 $ docker run --rm --name echoserver -p 80:8080 -d k8s.gcr.io/echoserver:1.4
@@ -253,6 +253,10 @@ $ kubectl get deployments
 NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
 hellonginx-deployment   1/1     1            1           117s
 ```
+
+## Installing the Kubernetes plugin for Visual Studio Code
+
+At this point, I installed the Kubernetes plugin for Visual Studio Code. I found that the Docker plugin just does not work with Kubernetes. Using this plugin, it's relatively easy to find pods, right-click and SSH to them, look at the deployment file or even delete pods.
 
 ## How to access hellonginx
 
