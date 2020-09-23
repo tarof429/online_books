@@ -11,7 +11,8 @@ The technology stack tht we'll look into is as follows:
 * Visual Studio Code
 * Minikube
 * Kubernetes
-* Ansible
+* k9s
+* Consul
 * Go
 * Python
 * Jenkins
