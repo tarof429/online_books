@@ -1,4 +1,4 @@
-# Part 2: Hello Minikube
+# Part 2: Hello Minikube: Deploying NGINX to Kubernetes
 
 ## Introduction
 

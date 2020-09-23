@@ -1,4 +1,4 @@
-# Part 3: Helloweb: A simple Go application
+# Part 3: Helloweb: A simple Go web application on Kubernetes
 
 ## Introduction
 
