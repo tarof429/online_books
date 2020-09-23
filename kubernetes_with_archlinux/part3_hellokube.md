@@ -1,12 +1,14 @@
-# Part 3: Helloweb: A simple Go web application on Kubernetes
+# Part 3: Hellokube: A simple Go web application on Kubernetes
 
 ## Introduction
 
 In this section, I will create a simple web server using Go and deploy it to Minikube. Writing web servers with Go is very simple and is easy to run whether on bare-metal or inside a container. We'll do both and hopefully have fewer stumbling blocks.
 
+This code is available at https://github.com/tarof429/hellokube.
+
 ## Step 1: Create the web server
 
-Below is the code for the web server which listens on port 9090. There are several places to find basic examples of web servers in Go. For example, the net/http package documentation at https://golang.org/pkg/net/http/. For this example, we don't need to do something as complicated as https://github.com/gorilla/mux.
+Below is the code for the web server which listens on port 9090. There are several places to find basic examples of web servers in Go. For example, the net/http package documentation at https://golang.org/pkg/net/http/.
 
 
 {% code title="main.go" %}
@@ -53,10 +55,10 @@ The simplest solution is to therefore just use the golang image for both buildin
 FROM golang:1.14
 WORKDIR '/src'
 COPY main.go ./
-RUN go build -o /usr/bin/simpleweb main.go && \
+RUN go build -o /usr/bin/hellokube main.go && \
     rm -rf /src
 EXPOSE 8090
-CMD ["/usr/bin/simpleweb"]
+CMD ["/usr/bin/hellokube"]
 ```
 {% endcode %}
 
@@ -64,8 +66,8 @@ To build and run the container, first make sure we are using the docker daemon i
 
 ```bash
 $ eval $(minikube -p minikube docker-env)
-$ docker build -t simpleweb:v1.0 .
-$ docker run --rm -p 8090:8090 -td simpleweb:v1.0
+$ docker build -t hellokube:v1.0 .
+$ docker run --rm -p 8090:8090 -td hellokube:v1.0
 $ curl http://localhost:8090
 Hello from Go!
 ```
@@ -73,25 +75,25 @@ Hello from Go!
 
 Next, we will create a deployment. The containerPort indicates that the container listens to port 8090; however, this section is not required as all ports will be mapped.
 
-{% code title="simpleweb-deployment.yml" %}
+{% code title="hellokube-deployment.yml" %}
 ```yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simpleweb-deployment
+  name: hellokube-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: simpleweb-label
+      app: hellokube-label
   template:
     metadata:
       labels:
-        app: simpleweb-label
+        app: hellokube-label
     spec:
       containers:
-        - name: simpleweb
-          image: simpleweb:v1.0
+        - name: hellokube
+          image: hellokube:v1.0
           ports:
           # Port used by this container
           - containerPort: 8090
@@ -102,15 +104,15 @@ spec:
 
 Next, we define the service. Note that we do not specify it as a ClusterIP type; this is already the default type. In this case, we set the port value equal to the targetPort value.
 
-{% code title="simpleweb-clusterip-service.yml" %}
+{% code title="hellokube-clusterip-service.yml" %}
 ```yml
 apiVersion: v1
 kind: Service
 metadata:
-  name: simpleweb-clusterip-service
+  name: hellokube-clusterip-service
 spec:
   selector:
-    app: simpleweb-label
+    app: hellokube-label
   ports:
     - port: 8090
       targetPort: 8090
@@ -126,7 +128,7 @@ Finally we define the ingress. The port value should be set to the same port tha
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: simpleweb-ingress-service
+  name: hellokube-ingress-service
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: 'true'
@@ -137,7 +139,7 @@ spec:
         paths:
           - path: /?(.*)
             backend:
-              serviceName: simpleweb-clusterip-service
+              serviceName: hellokube-clusterip-service
               servicePort: 8090
 ```
 {% endcode %}
