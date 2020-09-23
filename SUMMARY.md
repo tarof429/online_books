@@ -1,6 +1,7 @@
 # Table of contents
 
 * [About](README.md)
+* [License](LICENSE)
 * [Kubernetes with Archlinux](kubernetes_with_archlinux/README.md)
   * [Part 1: Introduction & Setup](kubernetes_with_archlinux/part1_setup.md)
   * [Part 2: Hello Minikube: Deploying NGINX to Kubernetes](kubernetes_with_archlinux/part2_hello_minikube.md)
