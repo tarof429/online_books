@@ -253,7 +253,35 @@ Then I found https://kubernetes.io/docs/tasks/inject-data-application/environmen
 
 Among the three choices, I settled on setting MYSQL_HOST to localhost because it's the easiest to understand.
 
+## ConfigMaps for Setting MYSQL properties
 
-## Closing thoughts
+https://github.com/tarof429/tron_legacy_cast/tree/v1.1 is a minor but very significant update. It uses an additional ConfigMap to centralize properties used by both Mariadb and the API client. I had significant challenges in getting this working and a significant issue was figuring out why my misconfigured pod wouldn't start. If a pod or deployment is misconfigured for any reason, `kubectl` will not report it. If you run `kubectl get pods` you will see a CreateContainerConfigError. The way I tried to investigate this was to come up with another deployment which I called `envclient-deployment` which I used to print environment variables in an attempt to get more information. Later I found a much better approach. This is to run the command `kubectl describe pod <pod name>`. Excerpts of this output are shown below.
 
-This section took two days to complete. If it took 1 day to get docker-compose working, I wondered if it would be better to just to start with kubernetes. There's still a lot that I don't know about Kubernetes, so maybe someday I'll get to that level.
+```bash
+$ kubectl describe pod mariadb-deployment-f4867bb77-qqs9b
+Name:         mariadb-deployment-f4867bb77-qqs9b
+...
+    Environment:
+      MYSQL_HOST:           localhost
+      MYSQL_ROOT_PASSWORD:  portal
+      MYSQL_USER:           <set to the key 'mysqluser' of config map 'mariadb-configmapx'>     Optional: false
+      MYSQL_PASSWORD:       <set to the key 'mysqlpassword' of config map 'mariadb-configmap'>  Optional: false
+      MYSQL_DATABASE:       <set to the key 'mysqldatabase' of config map 'mariadb-configmap'>  Optional: false
+    Mounts:
+...
+Events:
+  Type     Reason     Age                   From               Message
+  ----     ------     ----                  ----               -------
+  Normal   Scheduled  3m19s                 default-scheduler  Successfully assigned default/mariadb-deployment-f4867bb77-qqs9b to minikube
+  Warning  Failed     78s (x12 over 3m18s)  kubelet            Error: configmap "mariadb-configmapx" not found
+  Normal   Pulled     63s (x13 over 3m18s)  kubelet            Container image "mariadb:10.4" already present on machine
+...
+```
+
+At a quick glance, all the properties looked like they are being set to some value. However there was an event that said configmap "mariadb-configmapx" not found. And if i scrolled up, it seems odd that MYSQL_USER tries to use config map 'mariadb-configmapx'. This is not exactly what happened, but it illustrates how `kubectl describe` can be used to debug Kubernetes issues. What actually happend was that I tried to use the volume name instead of the configmap name for each property. Why trying to figure out how to use ConfigMaps, I referred to https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/. Perhaps there is a better resource out there that explains ConfigMaps?
+
+## Using Secrets
+
+After getting this far, I really wanted to take a break. But I wasn't done yet! We need to use Secrets to encrypt our database passwords. This avoids having to hardcode these values in our deployment files. I've created a script that asks the user for the root and user password and based on these inputs the Secrets file is generated. Then all I have to do is run `kubetl deploy -f k8s` to deploy the Secret. 
+
+This version has been released at https://github.com/tarof429/tron_legacy_cast/tree/v1.2.
