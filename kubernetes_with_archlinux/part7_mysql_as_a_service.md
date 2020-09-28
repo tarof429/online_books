@@ -1,4 +1,4 @@
-# Part 8: Using MySQL as a service
+# Part 7: Using MySQL as a service
 
 In the previous sections, the deployments did not depend on any existing service such as a database. All we had to do was create some kind of application that could be accessible to the outside world and could respond to requests. 
 
