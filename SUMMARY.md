@@ -11,3 +11,4 @@
   * [Part 6: Kubeiostat: A simple Python REST service on Kubernetes](kubernetes_with_archlinux/part6_kube_iostat.md)
   * [Part 7: Using MySQL as a service](kubernetes_with_archlinux/part7_mysql_as_a_service.md)
   * [Part 8: What we've covered so far...](kubernetes_with_archlinux/part8_what_weve_covered.md)
+  * [Part 9: Three-tier CI/CD Pipeline](kubernetes_with_archlinux/part9_three_tier.md)
