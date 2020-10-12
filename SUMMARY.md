@@ -13,3 +13,5 @@
   * [Part 8: What we've covered so far...](kubernetes_with_archlinux/part8_what_weve_covered.md)
   * [Part 9: Three-tier CI/CD Pipeline](kubernetes_with_archlinux/part9_three_tier.md)
 * [Python](python/README.md)
+* [Terraform with ArchLinux](terraform_with_archlinux/README.md)
+  * [Part 1: Installation and Introduction](terraform_with_archlinux/part1_installation.md)
