@@ -1,5 +1,6 @@
 # Part 1: Installation and Introduction
 
+This section discusses how to install terraform on ArchLinux and perform basic operations to create infrastructure. The content is based on a Youtube video at `https://www.youtube.com/watch?v=SLB_c_ayRMo&t=2608s`. See the end of this section for the full reference.
 
 ## The docker provider
 
@@ -64,7 +65,7 @@ resource "docker_container" "nginx" {
  terraform init
  ```
 
- 5. Provision the NGINX container. Answer Yes at the command prompt.
+5. Provision the NGINX container. Answer Yes at the command prompt.
 
  ```bash
  terraform apply
@@ -200,4 +201,6 @@ The order in which resources are defined do no matter in Terraform. For example,
 
 - `terraform.tfstat` Every time you run `terraform apply`, this file will be modified. This file must not be removed because it contains state information.
 
-- 
+## References
+
+<a href="https://www.youtube.com/watch?v=SLB_c_ayRMo&t=2608s">Terraform Course - Automate your AWS cloud infrastructure by freeCodeCamp.org</a>
