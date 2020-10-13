@@ -2,7 +2,7 @@
 
 This section is based on the content from https://effectivepython.com/. 
 
-1. Use `f strings` over other methods of string interpolation.
+## Use `f strings` over other methods of string interpolation.
 
 ```python
 world = 'world'
@@ -10,7 +10,7 @@ print(f'hello {world}')
 # Output: hello world
 ```
 
-2. Prefer multiple assignment unpacking over indexing
+## Prefer multiple assignment unpacking over indexing
 
 Consider the case where we need to iterate over a map. One way to do this is with a *for...in* loop.
 
