@@ -13,7 +13,7 @@
     * [Part 8: What we've covered so far...](kubernetes_with_archlinux/part8_what_weve_covered.md)
     * [Part 9: Three-tier CI/CD Pipeline](kubernetes_with_archlinux/part9_three_tier.md)
 * [Python with ArchLinux](python_with_arch_linux/README.md)
-    * [Part 1: The Basics](python_with_arch_linux/part1_setup.md)
+    * [Part 1: The Basics](python_with_arch_linux/part1_basics.md)
     * [Part 2: Files](python_with_arch_linux/part2_files.md)
     * [Part 3: Data Structures](python_with_arch_linux/part3_data_structures.md)
     * [Part 4: Classes](python_with_arch_linux/part4_classes.md)
