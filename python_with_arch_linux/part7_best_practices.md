@@ -1,4 +1,4 @@
-# Part 6: Best Practices
+# Part 7: Best Practices
 
 1. Use `f strings` over other methods of string interpolation.
 

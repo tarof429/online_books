@@ -1,4 +1,4 @@
-# Part 5: Classes
+# Part 4: Classes
 
 Classes are used to encapsulate data and its operations. This allows programmers to focus on the larger program logic instead of the details needed to manipulate data.
 

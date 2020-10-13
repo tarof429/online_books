@@ -1,4 +1,6 @@
-## Part3: Lists
+# Part 3: Data Structures
+
+## Lists
 
 To create a list, enclose a set of items in [].
 
