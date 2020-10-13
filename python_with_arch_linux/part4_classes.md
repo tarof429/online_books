@@ -33,7 +33,7 @@ cat = Animal('Cat')
 cat.bark()
 ```
 
-The class above demonstrates the need for ineritance. We can say that the base class Animal has a method called walk(), since all animals walk. However, dogs bark and cats meow.
+Python classes also suppot inheritance. To do this, after the class declaration enclose the superclass in parenthesis.
 
 ```python
 class Animal:
@@ -63,7 +63,7 @@ cat.meow()
 cat.walk()
 ```
 
-Now in case we want to define a class without any methods, use the *pass* keyword. 
+In case we want to define a class without any methods, use the *pass* keyword. The *pass* keyword can also be used to declare methods without an implementation.
 
 ```python
 class Animal:

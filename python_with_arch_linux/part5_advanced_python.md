@@ -54,6 +54,7 @@ if __name__ == '__main__':
 ```
 
 ## Generators
+
 Generators are functions that carry state, so that repeated calls to the function can yield different results. 
 
 The example below generates a key similar to docker IDs.
@@ -390,7 +391,6 @@ dirs = [d for d in os.listdir('.') if os.path.isdir(d)]
 
 print('{} projects'.format(len(dirs)))
 ```                    
-
 
 ## Reduce
 

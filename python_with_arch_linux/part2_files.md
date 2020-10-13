@@ -12,7 +12,6 @@ f.close()
 Alternatively, the *with* statement automatically closes the file.
 
 ```python
-
 with open('mbox.txt') as f:
     for line in f:
         print(line)
@@ -28,7 +27,7 @@ with open('output.txt', 'w') as f:
     f.write(lines)
 ```
 
-Python has a convenient function readlines() to read the contents of a file into a list. The code below finds all the email addresses in mbox.txt, discarding duplicates. The two most common functions used to accomplish this are startswith() and find(). Note that these are functions for strings, not files.
+Python has a convenient function readlines() to read the contents of a text file into a list. The code below finds all the email addresses in mbox.txt, discarding duplicates. The two most common functions used to accomplish this are startswith() and find(). Note that these are functions for strings, not files.
 
 ```python
 with open('mbox.txt') as f:

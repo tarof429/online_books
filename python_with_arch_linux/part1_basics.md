@@ -1,4 +1,15 @@
-# Part 1: The Basics
+# Part 1: Installation and the Basics
+
+## Installation
+
+On ArchLinux, the *python* package will install Python 3.x.
+
+```bash
+$ pacman -Q python
+python 3.8.6-1
+$ python --version
+Python 3.8.6
+```
 
 ## Comments
 
@@ -33,7 +44,7 @@ Parameters:
 """
 ```
 
-## Strings and numbers
+## Numbers and strings
 
 Python can be used a simple calculator, as the examples below show.
 
@@ -57,18 +68,15 @@ Python can be used a simple calculator, as the examples below show.
 2 ** 3 
 ```
 
-Python does not have a ++ operator like in C. To increment a number you must explicitly add 1 to it. One can write a convenience function for doing this.
+Python does not have a ++ operator like in C. To increment a number you must explicitly add 1 to it. The example below counts the number of characters in *world*.
 
 ```python
-def count(word):
-    counter = 0
-    for letter in word:
-        counter = counter + 1
-    return counter
+world = 'world'
+counter = 1
+for _, s in enumerate(world):
+    counter = counter + 1
 
-if __name__ == '__main__':
-    print(count('hello'))
-# 5
+print(counter) # 6
 ```
 
 Strings are ordered collections of characters. They can be single, double or triple quoted.
@@ -78,30 +86,26 @@ planet = 'Mars'
 car = "Honda"
 ```
 
-A common function used on a string is len, which returns the length of the string. It can be used, for example, to iterate through the chaacters of the string.
+A common function used on a string is len, which returns the length of the string. We could use this in place of *enumerate* to enumerate through the string.
 
 
 ```python
 fruit = 'pineapple'
-# print 'e'
-print(fruit[len(fruit) - 1])
+print(len(fruit)) # 9
 ```
 
-Because strings are collections, you can obtain substrings using slices.
+Because strings are collections, you can obtain substrings using slices. The first number is the starting index, and the second number is the ending index (which is excluded from the substring).
 
 ```python
 fruit = 'pineapple'
-# Get the first two characters
-print(fruit[0:2])
+print(fruit[0:2]) # pi
 ```
 
 Testing for characters in a string are supported using the 'in' operator and index function.
 
 ```python
 if 'a' in 'pineapple':
-    print('Found')
-
-print('pineapple'.index('a'))
+    print('a is in pineapple') # a is in pineapple
 ```
 
 Python also has a few functions to convert the string according to the English language.
@@ -113,22 +117,24 @@ print('pineapple'.lower())
 
 '''
 Returns:
-print('pineapple'.capitalize())
-print('pineapple'.upper())
-print('pineapple'.lower())
+Pineapple
+PINEAPPLE
+pineapple
 '''
 ```
 
 The code snippet below uses the find() function and string slicing to extract 0.8475.
 
 ```python
-str = 'X-DSPAM-Confidence:0.8475'
+s = 'X-DSPAM-Confidence:0.8475'
 
 # Find the index of the ':' character in str
-index = str.find(':')
+index = s.find(':')
 
 # Get the characters after the index and print it as a float
-print(float(str[index + 1:]))
+print(float(s[index + 1:]))
+# Returns
+0.8475
 ```
 
 Consider a problem where we are given a string with numbers and spaces, and we only need to evaluate the numbers. Therefore it would be nice to find a way to remove all emppty empty spaces. The trim() function would be useful but only if the empty spaces occur at the beginning and end of the string. If there are spaces within the string, then one way to remove them is to do it manually:
@@ -153,17 +159,17 @@ print('1 2 3 4 5 6'.replace(' ', ''))
 # 123456
 ```
 
-Also consider the case where we're given a string and want to check whether it's also a valid number or not. Rather than iterating through the elements of the string and calling isdigit() on each one, we could call isdigit() on the entire string.
+Also consider the case where we're given a string and want to check whether it's also a valid number or not. Rather than iterating through the elements of the string and checking whether it's a digit, we could call isdigit() on the entire string.
 
 ```python
 a='798372'
 if a.isdigit() == True:
-    # do something
+    print("Yes it's a digit")
 ```
 
-## About data types
-
+{% hint style="info" %}
 The plain int type is unbounded, so there is no maximum value it can hold.
+{% endhint %}
 
 ## Code blocks
 
@@ -281,7 +287,6 @@ except:
     print('Please ener numeric input')
     sys.exit()
 
-
 # Worked less than 40 hours
 if hours <= 40:
     pay = pay_rate * hours
@@ -308,12 +313,6 @@ except ValueError as v:
     print('Bad score (not a valid number)')
     sys.exit()
 
-# The following test could be used to quickly break
-# out of the program
-# if score < 0.0 or score > 1.0:
-#     print('Out of bounds')
-#     sys.exit(1)
-
 if score >= 0.0 and score <= 1.0:
     if score >= 0.9:
         grade = 'A'
@@ -336,19 +335,19 @@ print(grade)
 
 In Java, ternary expressions involve the use of *?* and *:* to delineate expressions to evaluate. For example:
 
-```Java
+```java
 String result = statusCode > 0 ? "PASSED" : "FAILED"
 ```
 
 In Python, the same is acheived with the following blueprint:
 
-```Python
+```python
 condition_if_true if condition else condition_if_false
 ```
 
 Example:
 
-```Python
+```python
 result = "PASSED" if statusCode > 0 else "FAILED"
 ```
 
@@ -393,6 +392,7 @@ for index, value in enumerate(fruits):
 
 print(fruits)
 ```
+
 ## Exceptions
 
 Python has exception handling similar to Java. It is useful, for example, to print a message explaining why the program cannot continue due to an erroneous situation.
@@ -452,4 +452,3 @@ while True:
     finally:
         print('Calling cleanup')
 ```
-
