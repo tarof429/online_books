@@ -63,11 +63,11 @@ resource "docker_container" "nginx" {
 
 ```bash
  terraform init
- ```
+```
 
 5. Provision the NGINX container. Answer Yes at the command prompt.
 
- ```bash
+```bash
  terraform apply
 ```
 
