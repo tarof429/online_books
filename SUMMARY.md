@@ -24,6 +24,7 @@
     * [Part 1: Installation and Introduction](terraform_with_archlinux/part1_installation.md)
     * [Part 2: Sample Project](terraform_with_archlinux/part2_sample_project.md)
     * [Part 3: Advanced Terraform](terraform_with_archlinux/part3_advanced.md)
+    * [Part 4: S3 Example](terraform_with_archlinux/part4_s3_example.md)
 * [Go with ArchLinux](golang_with_archlinux/README.md)
     * [Part 1: Installation and the Basics](golang_with_archlinux/part1_setup_and_basics.md)
     * [Part 2: Advanced](golang_with_archlinux/part2_advanced.md)

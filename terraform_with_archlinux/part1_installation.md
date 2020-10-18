@@ -95,6 +95,10 @@ terraform destroy
 mkdir aws-demo
 ```
 
+{% hint style="info" %}
+To be able to use the aws provider, first install the AWS CLI first and run `aws configure` so that your credentials are set. You can create an AWS user just for API access and the AWS resources you want to use.
+{% endhint %}
+
 2. Create `main.tf` with the following content.
 
 {% code title="main.tf" %}
