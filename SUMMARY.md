@@ -28,3 +28,4 @@
 * [Go with ArchLinux](golang_with_archlinux/README.md)
     * [Part 1: Installation and the Basics](golang_with_archlinux/part1_setup_and_basics.md)
     * [Part 2: Advanced](golang_with_archlinux/part2_advanced.md)
+    * [Part 3: Challenge: A function to parse dmesg](golang_with_archlinux/part3_dmesg_challenge.md)
