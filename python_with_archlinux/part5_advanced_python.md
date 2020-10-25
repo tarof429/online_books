@@ -516,3 +516,9 @@ print(type(weapon_str)) # string
 weapon_json = json.loads(weapon_str)
 print(weapon_json['name']) 
 ```
+
+If the json data was in a file, we can pass in the file pointer to the loads() function.
+
+```python
+
+```

@@ -1678,7 +1678,7 @@ func main() {
 
 ### [Files](#files)
 
-To read a file, use *IOUtil.readFile()*.
+To read a file, use *ioutil.readFile()*.
 
 ```go
 package main
