@@ -9,17 +9,18 @@ This section discusses how to install terraform on ArchLinux and perform basic o
 ```bash
 sudo pacman -S terraform
 ```
-2. Verify the installatinon.
+2. Verify the installation.
 
 ```bash
 terraform -help
 ```
 3. Per the instructions on the terraform website, enable tab completion.
 
-{% code title="main.tr" %}
+{% code title="main.tf" %}
 ```bash
 terraform -install-autocomplete
 ```
+{% encode %}
 4. Create a directory called terraform-docker-demo
 
 ```bash
