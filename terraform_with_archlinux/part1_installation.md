@@ -9,26 +9,22 @@ This section discusses how to install terraform on ArchLinux and perform basic o
 ```bash
 sudo pacman -S terraform
 ```
-
 2. Verify the installatinon.
 
 ```bash
 terraform -help
 ```
-
 3. Per the instructions on the terraform website, enable tab completion.
 
 {% code title="main.tr" %}
 ```bash
 terraform -install-autocomplete
 ```
-
 4. Create a directory called terraform-docker-demo
 
 ```bash
 mkdir terraform-docker-demo
 ```
-
 5. cd to it and add the following content to a file called `main.tf`.
 
 {% code title="main.tf" %}
@@ -58,30 +54,26 @@ resource "docker_container" "nginx" {
 }
 ```
 {% endcode %}
-
-4. Initialize the project.
+6. . Initialize the project.
 
 ```bash
  terraform init
 ```
-
-5. Provision the NGINX container. Answer Yes at the command prompt.
+7. Provision the NGINX container. Answer Yes at the command prompt.
 
 ```bash
  terraform apply
 ```
 
-6. Confirm that the container has been created.
+8. Confirm that the container has been created.
 
 ```bash
 [docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
 8088bfe6e7c6        992e3b7be046        "/docker-entrypoint.…"   3 seconds ago       Up 2 seconds        0.0.0.0:8000->80/tcp   tutorial
 ```
-
-7. Visit http://localhost:8000
-
-8. Stop the container
+9. Visit http://localhost:8000
+10. Stop the container
 
 ```bash
 terraform destroy
@@ -98,7 +90,6 @@ mkdir aws-demo
 {% hint style="info" %}
 To be able to use the aws provider, first install the AWS CLI first and run `aws configure` so that your credentials are set. You can create an AWS user just for API access and the AWS resources you want to use.
 {% endhint %}
-
 2. Create `main.tf` with the following content.
 
 {% code title="main.tf" %}
@@ -117,13 +108,11 @@ provider "aws" {
 }
 ```
 {% endcode %}
-
 3. Run `terraform init`
 
 ```bash
 terraform init
 ```
-
 4. Run `aws apply`
 
 ```bash
@@ -133,10 +122,7 @@ terraform init
 {% hint style="info" %}
 To apply a plan and skip the prompts, run `terraform apply --auto-approve`.
 {% endhint %}
-
-
 5. Confirm the new instance in the AWS console at `https://us-west-2.console.aws.amazon.com/ec2`
-
 6. Tear down the instance.
 
 ```bash
