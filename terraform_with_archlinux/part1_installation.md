@@ -114,7 +114,7 @@ This section discusses how to install terraform on ArchLinux and perform basic o
     ```
     {% endcode %}
 
-# Configure the AWS Provider
+3. Configure the AWS Provider
 
     {% code title="main.tf" %}
     ```
@@ -125,13 +125,13 @@ This section discusses how to install terraform on ArchLinux and perform basic o
     {% endcode %}
 
 
-3. Run `terraform init`
+4. Run `terraform init`
 
     ```bash
     terraform init
     ```
 
-4. Run `aws apply`
+5. Run `aws apply`
 
     ```bash
     terraform apply
@@ -141,9 +141,9 @@ This section discusses how to install terraform on ArchLinux and perform basic o
     To apply a plan and skip the prompts, run `terraform apply --auto-approve`.
     {% endhint %}
 
-5. Confirm the new instance in the AWS console at `https://us-west-2.console.aws.amazon.com/ec2`
+6. Confirm the new instance in the AWS console at `https://us-west-2.console.aws.amazon.com/ec2`
 
-6. Tear down the instance.
+7. Tear down the instance.
 
     ```bash
     terraform destroy
