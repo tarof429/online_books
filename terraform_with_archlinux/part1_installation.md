@@ -6,129 +6,148 @@ This section discusses how to install terraform on ArchLinux and perform basic o
 
 1. The official instructions for installing Terraform are at https://learn.hashicorp.com/tutorials/terraform/install-cli. For ArchLinux, install the terraform package.
 
-```bash
-sudo pacman -S terraform
-```
+    ```bash
+    sudo pacman -S terraform
+    ```
+
 2. Verify the installation.
 
-```bash
-terraform -help
-```
+    ```bash
+    terraform -help
+    ```
+
 3. Per the instructions on the terraform website, enable tab completion.
 
-{% code title="main.tf" %}
-```bash
-terraform -install-autocomplete
-```
-{% encode %}
+    {% code title="main.tf" %}
+    ```bash
+    terraform -install-autocomplete
+    ```
+    {% encode %}
+
 4. Create a directory called terraform-docker-demo
 
-```bash
-mkdir terraform-docker-demo
-```
+    ```bash
+    mkdir terraform-docker-demo
+    ```
+
 5. cd to it and add the following content to a file called `main.tf`.
 
-{% code title="main.tf" %}
-```bash
-terraform {
-  required_providers {
-    docker = {
-      source = "terraform-providers/docker"
+    {% code title="main.tf" %}
+    ```bash
+    terraform {
+    required_providers {
+        docker = {
+        source = "terraform-providers/docker"
+        }
     }
-  }
-}
+    }
 
-provider "docker" {}
+    provider "docker" {}
 
-resource "docker_image" "nginx" {
-  name         = "nginx:latest"
-  keep_locally = false
-}
+    resource "docker_image" "nginx" {
+    name         = "nginx:latest"
+    keep_locally = false
+    }
 
-resource "docker_container" "nginx" {
-  image = docker_image.nginx.latest
-  name  = "tutorial"
-  ports {
-    internal = 80
-    external = 8000
-  }
-}
-```
-{% endcode %}
+    resource "docker_container" "nginx" {
+    image = docker_image.nginx.latest
+    name  = "tutorial"
+    ports {
+        internal = 80
+        external = 8000
+    }
+    }
+    ```
+    {% endcode %}
+
 6. . Initialize the project.
 
-```bash
- terraform init
-```
+    ```bash
+    terraform init
+    ```
+
 7. Provision the NGINX container. Answer Yes at the command prompt.
 
-```bash
- terraform apply
-```
+    ```bash
+    terraform apply
+    ```
 
 8. Confirm that the container has been created.
 
-```bash
-[docker ps
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
-8088bfe6e7c6        992e3b7be046        "/docker-entrypoint.…"   3 seconds ago       Up 2 seconds        0.0.0.0:8000->80/tcp   tutorial
-```
+    ```bash
+    [docker ps
+    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+    8088bfe6e7c6        992e3b7be046        "/docker-entrypoint.…"   3 seconds ago       Up 2 seconds        0.0.0.0:8000->80/tcp   tutorial
+    ```
+
 9. Visit http://localhost:8000
+
 10. Stop the container
 
-```bash
-terraform destroy
-```
+    ```bash
+    terraform destroy
+    ```
 
 ## The AWS provider
 
 1. Create a new project folder called `aws-demo`
 
-```bash
-mkdir aws-demo
-```
+    ```bash
+    mkdir aws-demo
+    ```
 
-{% hint style="info" %}
-To be able to use the aws provider, first install the AWS CLI first and run `aws configure` so that your credentials are set. You can create an AWS user just for API access and the AWS resources you want to use.
-{% endhint %}
+    {% hint style="info" %}
+    To be able to use the aws provider, first install the AWS CLI first and run `aws configure` so that your credentials are set. You can create an AWS user just for API access and the AWS resources you want to use.
+    {% endhint %}
+
 2. Create `main.tf` with the following content.
 
-{% code title="main.tf" %}
-```bash
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
+    {% code title="main.tf" %}
+    ```bash
+    terraform {
+        required_providers {
+            aws = {
+            source  = "hashicorp/aws"
+            }
+        }
     }
-  }
-}
+    ```
+    {% endcode %}
 
 # Configure the AWS Provider
-provider "aws" {
-  region = "us-west-2"
-}
-```
-{% endcode %}
+
+    {% code title="main.tf" %}
+    ```
+    provider "aws" {
+    region = "us-west-2"
+    }
+    ```
+    {% endcode %}
+
+
 3. Run `terraform init`
 
-```bash
-terraform init
-```
+    ```bash
+    terraform init
+    ```
+
 4. Run `aws apply`
 
-```bash
- terraform apply
-```
+    ```bash
+    terraform apply
+    ```
 
-{% hint style="info" %}
-To apply a plan and skip the prompts, run `terraform apply --auto-approve`.
-{% endhint %}
+    {% hint style="info" %}
+    To apply a plan and skip the prompts, run `terraform apply --auto-approve`.
+    {% endhint %}
+
 5. Confirm the new instance in the AWS console at `https://us-west-2.console.aws.amazon.com/ec2`
+
 6. Tear down the instance.
 
-```bash
-terraform destroy
-```
+    ```bash
+    terraform destroy
+    ```
 
 Now the interesting thing about Terraform is that destroying a resource is as simple as commenting out the resource and running `terraform apply` again! This makes it easy to track changes to infrastructure as we never have to explicitly destroy any resourcs. Terraform is declarative, so that every resource in a plan file will be matched with your cloud infrastructure. If anything doesn't match, Terraform will go through the steps to ensure that the state matches. 
 
