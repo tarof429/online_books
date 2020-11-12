@@ -134,3 +134,13 @@ Now that we're satisfied with `ufw`, let's set logging level to `low` again.
 ```bash
 # ufw logging low
 ```
+
+## Tips
+
+### Grafana
+
+Adding a rule for port 3000 is needed if the machine is hosting grafana.
+
+```bash
+# ufw allow from 192.168.10.0/24 to any proto tcp port 3000
+```
