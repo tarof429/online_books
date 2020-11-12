@@ -115,6 +115,7 @@ COPY ./index.html /usr/share/nginx/html/index.html
 {% code title="index.html" %}
 ```
 Hello nginx!
+```
 {% endcode %}
 
 Now when I build and run the container we are able to see our custom HTML page.
