@@ -395,7 +395,7 @@ spec:
 ```
 {% endcode %}
 
-Finally we cahnge our route.
+Finally we change our route.
 
 {% code title="ingress-service.yml" %}
 ```yml
