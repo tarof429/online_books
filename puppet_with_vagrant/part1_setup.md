@@ -1,10 +1,10 @@
-# Puppet with Vagrant
+# Setup
 
 ## Introduction
 
 The following are notes based on the Udemy course `Master Puppet for Devops Success`. 
 
-## Setup
+## Initial Steps
 
 Create the following Vagrantfile.
 

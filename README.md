@@ -1,3 +1,3 @@
 # About
 
-Infrastructure As Code, on ArchLinux. Visit https://app.gitbook.com/@tarof429/s/online-books/ for an enhanced experience.
+Notes on various programming and infrastructure topics. Visit https://app.gitbook.com/@tarof429/s/online-books/ for an enhanced experience.
