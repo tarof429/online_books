@@ -55,13 +55,13 @@ kubectl get pods -o wide
 ## Fastest way to create a pod
 
 ```
-kubectl run redis --image=redis123
+kubectl run redis --image=redis
 ```
 
 ## Fastest way to generate a yaml file for a pod
 
 ```
-kubectl run redis --image=redis123 --dry-run=client -o yaml > redis-pod.yml
+kubectl run redis --image=redis --dry-run=client -o yaml > redis-pod.yml
 $ cat redis-pod.yml
 apiVersion: v1
 kind: Pod
@@ -72,12 +72,37 @@ metadata:
   name: redis
 spec:
   containers:
-  - image: redis123
+  - image: redis
     name: redis
     resources: {}
   dnsPolicy: ClusterFirst
   restartPolicy: Always
 status: {}
+```
+
+### Generators
+
+If you're creating an object, any object, besides a pod, then you can look at `generators`. These are objects created by the `create` command.
+
+To begin with, type:
+
+```
+kubectl create
+```
+
+You will get a long list of options (including examples). For example:
+
+
+```
+ kubectl create deploy --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yml
+ ```
+
+ After this file is generated, you can use vi to modify it as needed (for example, set the number of replicas). It is best to become very familiar with this commmand as a quick way to generate yaml files.
+
+For example, we can quickly create a yaml file for a namespace.
+
+```
+kubectl create namespace mynamespace --dry-run=client -o yaml > mynamespace.yaml
 ```
 
 ## Fastest way to modify a running pod/replicaset
@@ -91,5 +116,17 @@ For a replicaset, this is the fastest way to change the number of replicas. Alte
 
 ```
 kubectl scale --replicas=2 rs/new-replica-set
+```
+
+### How to see all objects
+
+```
+kubectl get all
+```
+
+### How to find an object if you don't know its namespace:
+
+```
+kubectl get pods --all-namespaces | grep <pod name>
 ```
 
