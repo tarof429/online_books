@@ -124,9 +124,23 @@ kubectl scale --replicas=2 rs/new-replica-set
 kubectl get all
 ```
 
-### How to find an object if you don't know its namespace:
+### How to find an object if you don't know its namespace
 
 ```
 kubectl get pods --all-namespaces | grep <pod name>
+```
+
+### How to lookup a section of the yaml
+
+```
+kubectl explain pods.spec.tolerations
+```
+
+### How to make changs to a pod
+
+If a pod is already deployed and you need to make a change, it may be best to export the configuration to a file. Delete the running pod, modify the file, and apply it again with any changes.
+
+```
+kubectl get pod nginx -o yaml > another-pod.yml
 ```
 
