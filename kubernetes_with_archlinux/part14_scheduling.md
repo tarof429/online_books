@@ -371,3 +371,66 @@ To fix thsi, increase the memory size. Below is a snippet.
             cpu: "0.5"
 ```
 
+## Daemonsets
+
+The daemonset ensures that one copy of a pod is running on all nodes. This can be useful if you want exactly one pod on all the nodes for monitoring or logging. 
+
+To check for daemonsets, run:
+
+```
+kubectl get daemonsets --all-namespaces | wc -l
+```
+
+Ignore any column values.
+
+To create a daemonset, you can create a deployment and modify the Type.
+
+```
+kubectl create deployment --image=nginx nginx-daemonset --replicas=1 -o yaml --dry-run=client > nginx-daemonset.yml
+cat nginx-daemonset.yml
+```
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: nginx-daemonset
+  name: nginx-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: nginx-daemonset
+  template:
+    metadata:
+      labels:
+        app: nginx-daemonset
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+```
+
+Once deployed, you'll see the number of daemonsets as `2`. This is because we have two nodes.
+
+```
+$ kubectl get ds
+NAME              DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+nginx-daemonset   2         2         2       2            2           <none>          82s
+```
+
+## Static Pods
+
+
+Without controllers, etcd, and the entire Kubernetes infrastructure, a kubelet must rely on itself to create pods. To do this, a kubelet must be configured to load pod definition files from a specified location such as `/etc/kubernetes/manifests`.  If a pod loaded from this location crashes, the kubelet will create another one to replace it. If the contents of a static pod definition file changes, the kubelet will terminate the old pod and create a new one. 
+
+This location is passed to the kubelet at runtime. In some k8s implementations, this is passed in as an argument to the native kubelet process in a variable such as `--pod-manifest-path`. Hence if you run `ps -ef |grep kubelet`, you should see the path specified somewhere as a command-line argument. For minikube, `--pod-manifest-path` is not used. However, if you look at `/var/lib/kubelet/config.yaml` (the path of `--config`) you will see that in this file there is a variable called `staticPodPath` that points to `/etc/kubernetes/manifests`. Specfying the location of `staticPodPath` through a configuration file is the second way to specify the loocation of static pod definitions.
+
+```
+docker@minikube-m02:/etc/kubernetes$ ps -ef |grep kubelet
+root        1822       1  1 18:40 ?        00:00:41 /var/lib/minikube/binaries/v1.20.0/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --config=/var/lib/kubelet/config.yaml --container-runtime=docker --hostname-override=minikube-m02 --kubeconfig=/etc/kubernetes/kubelet.conf --network-plugin=cni --node-ip=192.168.49.3
+docker@minikube-m02:/etc/kubernetes$ sudo cat /var/lib/kubelet/config.yaml| grep manifest
+staticPodPath: /etc/kubernetes/manifests
+```
+
+Within the node, you can use `docker ps` to find the running pod since the API server is not available. If you create/delete static nodes and there is no API server available, this is the only way to check if a static pod is running or not.
