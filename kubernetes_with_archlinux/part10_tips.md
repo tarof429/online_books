@@ -144,3 +144,11 @@ If a pod is already deployed and you need to make a change, it may be best to ex
 kubectl get pod nginx -o yaml > another-pod.yml
 ```
 
+### How to find the location where static pods are deployed
+
+In some implementations, this can be found as an argument passed to the kubelet executable. 
+```
+ps -ef | grep kubelet
+```
+
+Other times, you need to look at the `config.yaml` passed to the kubelet.

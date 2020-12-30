@@ -421,7 +421,6 @@ nginx-daemonset   2         2         2       2            2           <none>   
 
 ## Static Pods
 
-
 Without controllers, etcd, and the entire Kubernetes infrastructure, a kubelet must rely on itself to create pods. To do this, a kubelet must be configured to load pod definition files from a specified location such as `/etc/kubernetes/manifests`.  If a pod loaded from this location crashes, the kubelet will create another one to replace it. If the contents of a static pod definition file changes, the kubelet will terminate the old pod and create a new one. 
 
 This location is passed to the kubelet at runtime. In some k8s implementations, this is passed in as an argument to the native kubelet process in a variable such as `--pod-manifest-path`. Hence if you run `ps -ef |grep kubelet`, you should see the path specified somewhere as a command-line argument. For minikube, `--pod-manifest-path` is not used. However, if you look at `/var/lib/kubelet/config.yaml` (the path of `--config`) you will see that in this file there is a variable called `staticPodPath` that points to `/etc/kubernetes/manifests`. Specfying the location of `staticPodPath` through a configuration file is the second way to specify the loocation of static pod definitions.
@@ -434,3 +433,31 @@ staticPodPath: /etc/kubernetes/manifests
 ```
 
 Within the node, you can use `docker ps` to find the running pod since the API server is not available. If you create/delete static nodes and there is no API server available, this is the only way to check if a static pod is running or not.
+
+## Multiple Schedulers
+
+There is usually one scheduler in a Kubernetes cluster called `default` and this is used to schedule pods if no other scheduler is specified. However you can create your own scheduler, deploy it like another pod, and create pods using this scheduler.
+
+For minikube, the scheduler uses `/etc/kubernetes/scheduler.conf` in the minikube node for its configuration. The scheduler's name is called `system:kube-scheduler`. In other implementations, it may have a different name such as `default`. To create additional schedlers, you must give it a different name. Start by copying the pod definition of the default scheduler and deploying it. This is often a static pod. Then add a runtime argument to the scheduler (for example, `--scheduler-name`) so that it has a unique name. 
+
+If you have multiple masters, only one master can have the property `--leader-elect` set to `true`. This master will lead scheduling activity. But if you have only one master, this property should be set to `false`. In a multiple master setup, you should also set `--lock-object-name` so that it doesn't collide with the default scheduler. 
+
+After you deploy your scheduler, check the status as you would with any pod.
+
+```
+kubectl get pods --namespace kube-system
+```
+
+The next step is to modify your pod to use the new scheduler using the property `pod.spec.schedulerName`. 
+
+To verify, you can use the command `kubectl get events`. 
+
+To view logs for a scheduler, you can use the command `kubectl logs`. 
+
+## Logging & Monitoring
+
+The metrics server is used to collect metrics information using cAdvisor installed on the kubelet and aggregating that information for consumption. This data is stored in-memory. To install it, on minikube, run `minikube addons enable metrics-server`. After the addon has been enabled, let it run for some time to collect enough data. Then run `kubectl top <node|pod>`. 
+
+Logs generated within a pod can be viewed using `kubectl logs -f <pod name>.`, where `-f` streams the output. 
+
+If a pod has multiple containers, you need to specify the container name as an extra argument. 
