@@ -152,3 +152,11 @@ ps -ef | grep kubelet
 ```
 
 Other times, you need to look at the `config.yaml` passed to the kubelet.
+
+### Fastest way to set an image for a pod
+
+```
+kubectl set image  deployment/nginx nginx=nginx:1.9.1
+```
+
+This can be useful to update a deployment with a newer version of a deployment. 
