@@ -136,6 +136,12 @@ kubectl get pods --all-namespaces | grep <pod name>
 kubectl explain pods.spec.tolerations
 ```
 
+A neat trick is to use `--recursive`
+
+```
+kubectl explain --recursive pod.spec.initContainers | less -A8
+```
+
 ### How to make changs to a pod
 
 If a pod is already deployed and you need to make a change, it may be best to export the configuration to a file. Delete the running pod, modify the file, and apply it again with any changes.
@@ -160,3 +166,4 @@ kubectl set image  deployment/nginx nginx=nginx:1.9.1
 ```
 
 This can be useful to update a deployment with a newer version of a deployment. 
+
