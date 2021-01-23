@@ -16,6 +16,7 @@
     * [Part 11: Replicasets](kubernetes_with_archlinux/part11_replicasets.md)
     * [Part 12: Namespaces](kubernetes_with_archlinux/part12_namespaces.md)
     * [Part 13: Services](kubernetes_with_archlinux/part13_services.md)
+    * [Part 14: Scheduling](kubernetes_with_archlinux/part14_scheduling.md))
 * [Python with ArchLinux](python_with_archlinux/README.md)
     * [Part 1: The Basics](python_with_archlinux/part1_basics.md)
     * [Part 2: Files](python_with_archlinux/part2_files.md)
