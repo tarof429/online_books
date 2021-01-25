@@ -58,9 +58,70 @@ openssl x509 -req -in apiserver.csr -CA ca.crt -CAkey ca.key -out apiserver.crt
 
 Let's say there are issues in the cluster involving certificates. How do you view the certificates in the cluster? 
 
-To solve this issue, we need to find out how the various components are started. For example, they may be started as system services. Or they may be started as static pods and we need to look for their definition files under /etc/kubernetes/manifests. Once we locate the certiifcates, we can use `openssl x509 -in <cert> -text -noout` to view the contents. 
+To solve this issue, we need to find out how the various components are started. For example, they may be started as system services. Or they may be started as static pods and we need to look for their definition files under /etc/kubernetes/manifests. Once we locate the certiifcates, we can use `openssl x509 -in taro.crt -text -noout` to view the contents. 
 
+### Viewing CSR
+
+To view a CSR, use the `req` command. The `req` is used for all CSRs. 
+
+```
+openssl req -in taro.csr -text -noout
+```
 
 ### Checking logs
 
 Another place to check for issues is the logs. Use `journalctl -u etcd.service -l` to view the logs for etcd. If kubeadm was used and the components are running as docker containers, you can use `kubectl logs <docker container>` to view those logs. But if the API server itself is down, you may have to use docker directly; for example, `docker logs <docker container>`. 
+
+### Using the certificates API
+
+Kubernetes provides an API to help generate certificates for administrators of the cluster. This is useful when there are multiple administrators of the cluster, and you want an automated way to do this.
+
+The user must first have a private key. If they don't have one, he must run the following command.
+
+```
+openssl genrsa -out taro.key 2048
+```
+
+Then the user must create a CSR based on their private key.
+
+```
+openssl req -new taro.key -subj "CN=taro" -out taro.csr
+```
+
+The administrator takes this CSR and creates a certificate signing object. It should look something like this:
+
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: john
+spec:
+  groups:
+
+
+  - system:authenticated
+  request: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQ1ZqQ0NBVDRDQVFBd0VURVBNQTBHQTFVRUF3d0dZVzVuWld4aE1JSUJJakFOQmdrcWhraUc5dzBCQVFFRgpBQU9DQVE4QU1JSUJDZ0tDQVFFQTByczhJTHRHdTYxakx2dHhWTTJSVlRWMDNHWlJTWWw0dWluVWo4RElaWjBOCnR2MUZtRVFSd3VoaUZsOFEzcWl0Qm0wMUFSMkNJVXBGd2ZzSjZ4MXF3ckJzVkhZbGlBNVhwRVpZM3ExcGswSDQKM3Z3aGJlK1o2MVNrVHF5SVBYUUwrTWM5T1Nsbm0xb0R2N0NtSkZNMUlMRVI3QTVGZnZKOEdFRjJ6dHBoaUlFMwpub1dtdHNZb3JuT2wzc2lHQ2ZGZzR4Zmd4eW8ybmlneFNVekl1bXNnVm9PM2ttT0x1RVF6cXpkakJ3TFJXbWlECklmMXBMWnoyalVnald4UkhCM1gyWnVVV1d1T09PZnpXM01LaE8ybHEvZi9DdS8wYk83c0x0MCt3U2ZMSU91TFcKcW90blZtRmxMMytqTy82WDNDKzBERHk5aUtwbXJjVDBnWGZLemE1dHJRSURBUUFCb0FBd0RRWUpLb1pJaHZjTgpBUUVMQlFBRGdnRUJBR05WdmVIOGR4ZzNvK21VeVRkbmFjVmQ1N24zSkExdnZEU1JWREkyQTZ1eXN3ZFp1L1BVCkkwZXpZWFV0RVNnSk1IRmQycVVNMjNuNVJsSXJ3R0xuUXFISUh5VStWWHhsdnZsRnpNOVpEWllSTmU3QlJvYXgKQVlEdUI5STZXT3FYbkFvczFqRmxNUG5NbFpqdU5kSGxpT1BjTU1oNndLaTZzZFhpVStHYTJ2RUVLY01jSVUyRgpvU2djUWdMYTk0aEpacGk3ZnNMdm1OQUxoT045UHdNMGM1dVJVejV4T0dGMUtCbWRSeEgvbUNOS2JKYjFRQm1HCkkwYitEUEdaTktXTU0xMzhIQXdoV0tkNjVoVHdYOWl4V3ZHMkh4TG1WQzg0L1BHT0tWQW9FNkpsYWFHdTlQVmkKdjlOSjVaZlZrcXdCd0hKbzZXdk9xVlA3SVFjZmg3d0drWm89Ci0tLS0tRU5EIENFUlRJRklDQVRFIFJFUVVFU1QtLS0tLQo=
+  signerName: kubernetes.io/kube-apiserver-client
+  usages:
+  - client auth
+EOF
+```
+
+Two things to note:
+
+- The certificatte is base 64 encoded. Use: `cat john.csr | base64 | tr -d "\n"`,
+- According to the official k8s doc, the usage must be `client auth`. However, the Udemy course says it must be `server auth`. 
+
+Certificates can be viewed by running `kubectl get csr`. A CSR can be approved by running `kubectl certificate approve john`. 
+
+View certificates by running `kubectl get csr john -o yaml`. The certiifcate will be in base64 format. You must convert it to text format by running `echo "certicate contents | base 64- --decode` 
+
+Certificate signing is managed by the controller manager. To see details, see /etc/kubernetes/manifests/kube-controller-manager.yaml.
+
+
+### kubeconfig
+
+The ~/kube/config file is used to set the user and creditials when accessing a cluster. When you start minikube, this file is populated with the the user and cluster, and ties the two using a `context`. The `kubectl config` command is used to view, set, and delete cluster configurations specified in this file. If you want to set a default namespace when you set a context, that is also possible. 
+
+Normally, certificate information is provided as a path in the kubeconfig file. However, you can also include the content in the kubeconfig file, as long as it is in base64 format. See https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/. 
