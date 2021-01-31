@@ -125,3 +125,141 @@ Certificate signing is managed by the controller manager. To see details, see /e
 The ~/kube/config file is used to set the user and creditials when accessing a cluster. When you start minikube, this file is populated with the the user and cluster, and ties the two using a `context`. The `kubectl config` command is used to view, set, and delete cluster configurations specified in this file. If you want to set a default namespace when you set a context, that is also possible. 
 
 Normally, certificate information is provided as a path in the kubeconfig file. However, you can also include the content in the kubeconfig file, as long as it is in base64 format. See https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/. 
+
+### Authorization
+
+Typically, users are associated with roles using a role-binding. First, create a role.
+
+```
+kubectl create role pod-reader --verb=get --verb=list --verb=watch --resource=pods --dry-run=client -o yaml > pod-reader-role.yaml
+cat pod-reader-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+```
+
+You can add multiple rules to a role. This can provide fine-tuned role-based access to resources. 
+
+After creating a role, you must associate it with a user. To do this, you create another object called `role-binding`. 
+
+```
+kkubectl create rolebinding pod-reader-binding --role=pod-reader --user=taro --dry-run=client -o yaml > pod-reader-binding.yaml
+[taro@zaxman kubernetes]$ cat pod-reader-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  creationTimestamp: null
+  name: pod-reader-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pod-reader
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: taro
+```
+
+To view roles, run:
+
+```
+kubectl get roles
+kubectl get rolebindings
+```
+
+To check the verbs, use the `auth` command.
+
+```
+kubectl auth can-i delete pod
+yes
+```
+
+You can also impersonate users.
+
+```
+kubectl auth can-i create deployments --as taro
+no
+```
+
+### Image security
+
+Most of the time, docker images are pulled from a public repository on hub.docker.io. There is nothing special we need to do to pull images from such repositories. However, if we host the image from our own private registry that requires credentials, we need to tell kubernetes how to authenticate to the registry. To do this, we create a secret.
+
+```
+kubectl create secret docker-registry registry-secret --docker-server='https://index.docker.io/vi/' --docker-username=guest --docker-password=secret --docker-email='guest@index.docker.io.com'
+```
+
+We then set this secret in the definition file for our pod or deployment.
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: private-reg
+spec:
+  containers:
+  - name: private-reg-container
+    image: <your-private-image>
+  imagePullSecrets:
+  - name: regcred
+```
+
+
+See https://kubernetes.io/docs/reference/access-authn-authz/rbac/. 
+
+### Cluster roles
+
+Cluster roles are roles that apply to the entire cluster. For example, the command below creates a role that would allow someone to manage nodes.
+
+```
+kubectl create clusterrole cluster-admin --verb=list,get,create,delete --resource=nodes  --dry-run=client -o yaml > cluster-admin-clusterrole.yaml
+```
+
+The command below would create a cluster role binding to associate the role to a user.
+
+```
+kubectl create clusterrolebinding cluster-admin-clusterrolebinding --clusterrole=cluster-admin --user=taro --dry-run=client -o yaml > cluster-admin-clusterrolebinding.yaml
+```
+
+### Security Contexts
+
+Pods can have security contexts that specify a variety of security attributes. This includes attributes such as `runAsUser`, `runAsGroup`, etc. If specified at the container level, these take precedence over the ones specified at the pod level. 
+
+### Network Policy
+
+A kubernetes object type of Network Policy can be used to control network traffic to and from pods. For example, you may want to limit ingress traffic to a pod running MySQL to port 3306. Network Policies support both Ingress and Egress rules to control traffic to and from pods. By default, all ingress and engress traffic is allowed to and from pods in the same namespace and so this opens up your pods. Below is a network policy that restricts traffic to a pod running etcd. Only ports 2379 and 2380 are allowed, and only from a pod with a label `app: dc-app`. We also set a rule that traffic can only originate within the cidr block of 172.28.128.1/24.
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: etcd-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: dc-etcd
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: dc-app
+    - ipBlock:
+        cidr: 172.28.128.1/24
+    ports:
+    - port: 2379
+      protocol: TCP
+    - port: 2380
+      protocol: TCP
+```
