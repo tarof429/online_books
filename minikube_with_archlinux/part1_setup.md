@@ -12,16 +12,8 @@ The technology stack tht we'll look into is as follows:
 * Minikube
 * Kubernetes
 * k9s
-* Consul
 * Go
 * Python
-* Jenkins
-* Spinaker
-* GKE
-* AWS
-* Github
-* Gitbook
-* Prometheus
 
 ## How to view this book
 
