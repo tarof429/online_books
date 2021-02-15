@@ -52,8 +52,7 @@ To scale it:
 kubectl scale --replicas=2 rs/frontend
 ```
 
-Tip:
-
+{% hint style="info" %}
 In vi, you should set the following when editing yml files.
 
 ```
@@ -65,5 +64,4 @@ To edit it:
 ```
 kubect edit rs/frontend
 ```
-
-
+{% endhint %}
