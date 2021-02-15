@@ -25,6 +25,7 @@
     * [Part 5: Advanced Python](python_with_archlinux/part5_advanced_python.md)
     * [Part 6: Odds and Ends](python_with_archlinux/part6_odds_and_ends.md)
     * [Part 7: Best Practices](python_with_archlinux/part7_best_practices.md)
+* [Udemy Course: CKA with Practice Test](udemy-cka/README.md)
 * [Terraform with ArchLinux](terraform_with_archlinux/README.md)
     * [Part 1: Installation and Introduction](terraform_with_archlinux/part1_installation.md)
     * [Part 2: Sample Project](terraform_with_archlinux/part2_sample_project.md)
