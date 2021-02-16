@@ -47,3 +47,5 @@
     * [Part 1: Setup](puppet_with_vagrant/part1_setup.md)
     * [Part 2: The Puppet Language (part 1)](puppet_with_vagrant/part2_puppet_language.md)
     * [Part 3: The Puppet Language (part 2)](puppet_with_vagrant/part3_puppet_language.md)
+* [Archlinux Musings](archlinux_musings/README.md)
+    * [Article 1: Mate, Firecracker, and why I started this](archlinux_musings/article_02152021.md)
