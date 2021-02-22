@@ -49,3 +49,4 @@
     * [Part 3: The Puppet Language (part 2)](puppet_with_vagrant/part3_puppet_language.md)
 * [Archlinux Musings](archlinux_musings/README.md)
     * [Article 1: Mate, Firecracker, and why I started this](archlinux_musings/article_02152021.md)
+    * [Article 2: What happened to ignite? Nginx ingress woes and success](archlinux_musings/article_02202021.md)
